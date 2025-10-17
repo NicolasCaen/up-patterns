@@ -1,0 +1,93 @@
+{
+    "generated_at": "2025-10-17T19:59:32+02:00",
+    "patterns": [
+        {
+            "slug": "header",
+            "name": "Header",
+            "type": "patterns",
+            "files": {
+                "pattern": "ressources/patterns/header/header.php"
+            },
+            "install": {
+                "pattern": "patterns",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "header-fixed",
+            "name": "Header Fixed",
+            "type": "patterns",
+            "files": {
+                "pattern": "ressources/patterns/header-fixed/header-fixed.php"
+            },
+            "install": {
+                "pattern": "patterns",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "sidebar",
+            "name": "Sidebar",
+            "type": "patterns",
+            "files": {
+                "pattern": "ressources/patterns/sidebar/sidebar.php"
+            },
+            "install": {
+                "pattern": "patterns",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        }
+    ],
+    "templates": [
+        {
+            "slug": "index",
+            "name": "Index",
+            "type": "templates",
+            "files": {
+                "template": "ressources/templates/index/index.html"
+            },
+            "install": {
+                "template": "templates",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "archive",
+            "name": "Archive",
+            "type": "templates",
+            "files": {
+                "template": "ressources/templates/archive/archive.html"
+            },
+            "install": {
+                "template": "templates",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        }
+    ],
+    "parts": [
+        {
+            "slug": "footer",
+            "name": "Footer",
+            "type": "parts",
+            "files": {
+                "part": "ressources/parts/footer/footer.html"
+            },
+            "install": {
+                "part": "parts",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        }
+    ]
+}
