@@ -419,7 +419,6 @@ if (!class_exists('UP_Patterns_Plugin')) {
             }));
             $manifest[$type][] = $entry;
 
-            $manifest['generated_at'] = current_time('c');
             $this->save_manifest($manifest);
         }
 
@@ -435,12 +434,19 @@ if (!class_exists('UP_Patterns_Plugin')) {
                 return $this->default_manifest_structure();
             }
 
+            if (isset($data['generated_at'])) {
+                unset($data['generated_at']);
+            }
+
             return $data;
         }
 
         private function save_manifest($manifest) {
             $path = $this->get_manifest_path();
             $this->ensure_base_directories();
+            if (isset($manifest['generated_at'])) {
+                unset($manifest['generated_at']);
+            }
             $encoded = wp_json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             file_put_contents($path, $encoded);
         }
@@ -581,7 +587,6 @@ if (!class_exists('UP_Patterns_Plugin')) {
 
         private function default_manifest_structure() {
             return [
-                'generated_at' => current_time('c'),
                 'patterns' => [],
                 'templates' => [],
                 'parts' => [],
