@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
+=======
+    "generated_at": "2025-10-17T20:28:54+02:00",
+>>>>>>> 778f7e3 (ajout de pattern)
     "patterns": [
         {
             "slug": "header",
@@ -34,6 +38,48 @@
             "type": "patterns",
             "files": {
                 "pattern": "ressources/patterns/sidebar/sidebar.php"
+            },
+            "install": {
+                "pattern": "patterns",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "core-group-section",
+            "name": "Core Group Section",
+            "type": "patterns",
+            "files": {
+                "pattern": "ressources/patterns/core-group-section/core-group-section.php"
+            },
+            "install": {
+                "pattern": "patterns",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "core-meta-heading",
+            "name": "Core Meta Heading",
+            "type": "patterns",
+            "files": {
+                "pattern": "ressources/patterns/core-meta-heading/core-meta-heading.php"
+            },
+            "install": {
+                "pattern": "patterns",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "core-meta-paragraph",
+            "name": "Core Meta Paragraph",
+            "type": "patterns",
+            "files": {
+                "pattern": "ressources/patterns/core-meta-paragraph/core-meta-paragraph.php"
             },
             "install": {
                 "pattern": "patterns",
@@ -80,6 +126,20 @@
             "type": "parts",
             "files": {
                 "part": "ressources/parts/footer/footer.html"
+            },
+            "install": {
+                "part": "parts",
+                "style": "assets/css/block",
+                "script": "assets/js/block",
+                "gsap": "assets/js/gsap"
+            }
+        },
+        {
+            "slug": "sidebar",
+            "name": "Sidebar",
+            "type": "parts",
+            "files": {
+                "part": "ressources/parts/sidebar/sidebar.html"
             },
             "install": {
                 "part": "parts",

@@ -306,12 +306,14 @@ if (!class_exists('UP_Patterns_Plugin')) {
             }
 
             $assets = $this->copy_related_assets($slug, $type);
+            $metadata = $this->extract_item_metadata($type, $source, $slug);
 
             $this->update_manifest($type, $slug, [
-                'name' => $this->generate_display_name($slug, basename($source)),
+                'name' => $this->resolve_display_name($metadata, $slug, basename($source)),
                 'source' => ltrim(str_replace(wp_normalize_path($theme_dir), '', $source), '/'),
                 'destination' => ltrim(str_replace(wp_normalize_path(plugin_dir_path(__FILE__)), '', $destination_file), '/'),
                 'assets' => $assets,
+                'metadata' => $metadata,
             ]);
 
             return true;
@@ -509,6 +511,7 @@ if (!class_exists('UP_Patterns_Plugin')) {
 
         private function build_manifest_entry($type, $slug, $data) {
             $settings = $this->get_settings();
+            $metadata = $data['metadata'] ?? [];
 
             $files = [];
             if ('patterns' === $type) {
@@ -556,6 +559,14 @@ if (!class_exists('UP_Patterns_Plugin')) {
                 'install' => $install,
             ];
 
+            if (!empty($metadata['description'])) {
+                $entry['description'] = $metadata['description'];
+            }
+
+            if (!empty($metadata['categories']) && is_array($metadata['categories'])) {
+                $entry['categories'] = array_values(array_filter(array_map('sanitize_text_field', $metadata['categories'])));
+            }
+
             if (!empty($data['assets']['preview'])) {
                 $entry['preview'] = $data['assets']['preview'];
             }
@@ -584,6 +595,86 @@ if (!class_exists('UP_Patterns_Plugin')) {
                 $candidate = $base;
             }
             return ucwords(trim(str_replace(['-', '_'], ' ', $candidate)));
+        }
+
+        private function resolve_display_name($metadata, $slug, $filename) {
+            if (is_array($metadata) && !empty($metadata['name'])) {
+                return sanitize_text_field($metadata['name']);
+            }
+
+            return $this->generate_display_name($slug, $filename);
+        }
+
+        private function extract_item_metadata($type, $source, $slug) {
+            $metadata = [
+                'name' => null,
+                'description' => null,
+                'categories' => [],
+            ];
+
+            if ('patterns' !== $type) {
+                return $metadata;
+            }
+
+            $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+
+            if ('php' === $extension) {
+                $data = $this->include_pattern_file($source);
+                if (is_array($data)) {
+                    if (!empty($data['title'])) {
+                        $metadata['name'] = $this->metadata_to_string($data['title']);
+                    }
+                    if (!empty($data['description'])) {
+                        $metadata['description'] = $this->metadata_to_string($data['description']);
+                    }
+                    if (!empty($data['categories'])) {
+                        $metadata['categories'] = $this->normalize_categories($data['categories']);
+                    }
+                }
+            }
+
+            if (empty($metadata['name'])) {
+                $metadata['name'] = $this->generate_display_name($slug, basename($source));
+            }
+
+            return $metadata;
+        }
+
+        private function include_pattern_file($file) {
+            ob_start();
+            $data = include $file;
+            ob_end_clean();
+            return $data;
+        }
+
+        private function metadata_to_string($value) {
+            if (is_object($value) && method_exists($value, 'translate')) {
+                $value = $value->translate();
+            }
+            if (is_array($value)) {
+                $value = implode(' ', $value);
+            }
+            return sanitize_text_field((string) $value);
+        }
+
+        private function normalize_categories($value) {
+            if (is_string($value)) {
+                $value = array_map('trim', explode(',', $value));
+            }
+            if (!is_array($value)) {
+                return [];
+            }
+
+            $categories = [];
+            foreach ($value as $category) {
+                $category = sanitize_text_field((string) $category);
+                if ('' === $category) {
+                    continue;
+                }
+                $categories[$category] = true;
+            }
+
+            return array_keys($categories);
         }
 
         private function add_notice($message, $type = 'success') {
